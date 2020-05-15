@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <title>我的個人檔案</title>
+  <meta http-equiv="application/json;charset=UTF-8"/>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -9,8 +10,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
 </head>
-<head>
 <style> 
 *{
 	margin: 0;
@@ -196,11 +197,10 @@ p ,h1 {
 }
 
 </style>
-  </head>
-<div class="jumbotron text-center  jumbotron-fluid">
-  <h1>歡迎來到我的個人網站</h1>
-</div>
-
+  <div class="jumbotron text-center  jumbotron-fluid">
+    <h1>歡迎來到我的個人網站</h1>
+  </div>
+  
 <div class="marqee">
   <ul>
     <li>歡迎來到我個人網站，從上到下分別為</li>
@@ -295,7 +295,18 @@ p ,h1 {
 
      <div class="col-md-12 box " >  
         <div id ="title"><h1>留言板</h1> </div>
-          <p>尚未完成</p>
+        <div class="">
+          <table class="table table-bordered table-striped">
+              <thead>
+                  <tr>
+                      
+                      <td>內容</td>
+                      
+                  </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+          </table>
+      </div>
         <a href="#" id="Footer6" class="btn btn-primary btn-lg btn-block" role="button">留言板</a>
       </div>
   </div>
@@ -306,4 +317,28 @@ p ,h1 {
 </div>
 
 </body>
+<script type="text/javascript">
+
+  $.ajax({
+  type: 'GET',
+  url: 'test.php',
+  success: function (data) {
+      //console.log(data);
+      var a = data.split(';'); //用;分割資料
+      //console.log(a);
+      var trStr = ' ';//動態拼接table
+      for (var i = 0; i < a.length-1; i++)  
+      {
+          var b = JSON.stringify(a[i]); //將陣列a改成字串
+          trStr += '<tr class="example">';
+              var obj = trStr += '<td width="100%">' + JSON.parse(b,[i])+'</td>';
+              var obj = trStr += '</tr>';  
+                  obj= obj.replace(/\"/g, "") //削掉雙引號
+                  obj= obj.replace(/,/g, ""); //削掉豆號
+                  obj= obj.replace(/\[|]/g,'');//削掉中括號
+      } 
+      $("#tbody").html(obj);
+  }
+});
+</script>
 </html>
